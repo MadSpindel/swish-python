@@ -1,0 +1,9 @@
+[run]
+branch = True
+source = swish
+
+[report]
+omit =
+    swish/exceptions.py
+    swish/*__init__.py
+    tests/*
