@@ -1,0 +1,17 @@
+language: python
+cache:
+  directories:
+    - $HOME/.cache/pip
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+before_install:
+  - pip install codecov
+install:
+ - pip install -r requirements_test.txt
+script:
+ - nosetests
+ - flake8 swish
+after_success:
+  - codecov
