@@ -3,3 +3,21 @@ This client library is designed to support the [Swish API](https://www.getswish.
 
 ## Installation
 Not available yet.
+
+## Quick Start Example
+
+    import swish
+
+    swish_client = swish.SwishClient(
+        swish.Environment.Production,
+        'YOUR_PAYEE_ALIAS',
+        '/path/to/cert.crt'
+    )
+
+    swish_client.payment_request(
+        amount=123,
+        currency='SEK',
+        callback_url='https://your-callback.url/here/',
+        payment_reference='Optional custom reference',
+        message='Quick Start Example'
+    )
