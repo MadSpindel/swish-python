@@ -10,7 +10,8 @@ class SwishClient(object):
         self.payee_alias = payee_alias
         self.cert = cert
 
-    def post(self, url, json):
+    def post(self, endpoint, json):
+        url = self.environment.base_url + endpoint
         r = requests.post(url=url, json=json, headers={'Content-Type': 'application/json'}, cert=self.cert)
         print(r)
         print("Not implemented!")
