@@ -13,6 +13,9 @@ class SwishClientTestCase(unittest.TestCase):
         self.assertEqual(self.client.cert, 'fake-cert')
 
     def test_payment_request(self):
+        self.client.payment_request(
+            amount=1, currency='SEK', callback_url='https://fake-url.com/', payment_reference='fake', message='fake'
+        )
         self.fail("Not implemented!")
 
     def test_refund(self):
