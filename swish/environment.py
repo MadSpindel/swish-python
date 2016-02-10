@@ -19,7 +19,7 @@ class Environment(object):
             raise ConfigurationError("Provided environment name is invalid")
 
 Environment.Test = Environment(name="test",
-                               base_url="http://localhost/")
+                               base_url="http://localhost/swish-cpcapi/api/v1/")
 Environment.Production = Environment(name="production",
                                      base_url="https://swicpc.bankgirot.se/swish-cpcapi/api/v1/")
 Environment.All = {
