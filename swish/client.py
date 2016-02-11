@@ -24,8 +24,6 @@ class SwishClient(object):
             'payment_reference': payment_reference,
             'message': message
         }
-        print(json.dumps(data))
-        print("Not implemented!")
 
     def refund(self, amount, currency, callback_url):
         data = {
@@ -33,5 +31,3 @@ class SwishClient(object):
             'currency': currency,
             'callback_url': callback_url
         }
-        print(json.dumps(data))
-        print("Not implemented!")

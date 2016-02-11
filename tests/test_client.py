@@ -1,3 +1,4 @@
+import json
 import responses
 import unittest
 
@@ -21,7 +22,10 @@ class SwishClientTestCase(unittest.TestCase):
             headers = {
                 'Location': LOCATION
             }
-            return (201, headers)
+            resp_body = {
+                "message": "Todo",
+            }
+            return (201, headers, json.dumps(resp_body))
 
         responses.add_callback(
             responses.POST,
