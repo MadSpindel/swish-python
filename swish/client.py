@@ -24,6 +24,7 @@ class SwishClient(object):
             'payment_reference': payment_reference,
             'message': message
         }
+        self.post('paymentrequests', json.dumps(data))
 
     def refund(self, amount, currency, callback_url):
         data = {
@@ -31,3 +32,4 @@ class SwishClient(object):
             'currency': currency,
             'callback_url': callback_url
         }
+        self.post('refunds', json.dumps(data))
