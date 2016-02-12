@@ -41,4 +41,20 @@ class SwishClientTestCase(unittest.TestCase):
 
     @responses.activate
     def test_refund(self):
+        def request_callback(request):
+            headers = {
+                'Location': LOCATION
+            }
+            resp_body = {
+                "message": "Todo",
+            }
+            return (201, headers, json.dumps(resp_body))
+
+        responses.add_callback(
+            responses.POST,
+            self.client.environment.base_url + 'refunds',
+            callback=request_callback,
+            content_type='application/json'
+        )
+
         self.fail("Not implemented!")
