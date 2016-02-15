@@ -1,4 +1,3 @@
-import json
 import requests
 
 from .environment import Environment
@@ -10,15 +9,15 @@ class SwishClient(object):
         self.payee_alias = payee_alias
         self.cert = cert
 
-    def post(self, endpoint, json):
+    def post(self, endpoint, payload):
         url = self.environment.base_url + endpoint
-        return requests.post(url=url, json=json, headers={'Content-Type': 'application/json'}, cert=self.cert)
+        return requests.post(url=url, json=payload, headers={'Content-Type': 'application/json'}, cert=self.cert)
 
     def get(self, endpoint, id):
         print("Not implemented yet!")
 
     def payment_request(self, amount, currency, callback_url, payee_payment_reference='', message=''):
-        data = {
+        payload = {
             'payeeAlias': self.payee_alias,
             'amount': amount,
             'currency': currency,
@@ -26,19 +25,19 @@ class SwishClient(object):
             'payeePaymentReference': payee_payment_reference,
             'message': message
         }
-        r = self.post('paymentrequests', json.dumps(data))
+        r = self.post('paymentrequests', payload)
         return r
 
     def get_payment_request(payment_request_id):
         print("Not implemented yet!")
 
     def refund(self, amount, currency, callback_url, original_payment_reference, payer_payment_reference=''):
-        data = {
+        payload = {
             'amount': amount,
             'currency': currency,
             'callback_url': callback_url
         }
-        r = self.post('refunds', json.dumps(data))
+        r = self.post('refunds', payload)
         return r
 
     def get_refund(refund_id):
