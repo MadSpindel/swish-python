@@ -12,9 +12,10 @@ class SwishClient(object):
 
     def post(self, endpoint, json):
         url = self.environment.base_url + endpoint
-        r = requests.post(url=url, json=json, headers={'Content-Type': 'application/json'}, cert=self.cert)
-        print(r)
-        print("Not implemented!")
+        return requests.post(url=url, json=json, headers={'Content-Type': 'application/json'}, cert=self.cert)
+
+    def get(self, endpoint, id):
+        print("Not implemented yet!")
 
     def payment_request(self, amount, currency, callback_url, payment_reference='', message=''):
         data = {
@@ -24,12 +25,20 @@ class SwishClient(object):
             'payment_reference': payment_reference,
             'message': message
         }
-        self.post('paymentrequests', json.dumps(data))
+        r = self.post('paymentrequests', json.dumps(data))
+        return r
 
-    def refund(self, amount, currency, callback_url):
+    def get_payment_request(payment_request_id):
+        print("Not implemented yet!")
+
+    def refund(self, amount, currency, callback_url, original_payment_reference, payer_payment_reference=''):
         data = {
             'amount': amount,
             'currency': currency,
             'callback_url': callback_url
         }
-        self.post('refunds', json.dumps(data))
+        r = self.post('refunds', json.dumps(data))
+        return r
+
+    def get_refund(refund_id):
+        print("Not implemented yet!")
