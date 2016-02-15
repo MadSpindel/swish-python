@@ -17,12 +17,13 @@ class SwishClient(object):
     def get(self, endpoint, id):
         print("Not implemented yet!")
 
-    def payment_request(self, amount, currency, callback_url, payment_reference='', message=''):
+    def payment_request(self, amount, currency, callback_url, payee_payment_reference='', message=''):
         data = {
+            'payeeAlias': self.payee_alias,
             'amount': amount,
             'currency': currency,
-            'callback_url': callback_url,
-            'payment_reference': payment_reference,
+            'callbackUrl': callback_url,
+            'payeePaymentReference': payee_payment_reference,
             'message': message
         }
         r = self.post('paymentrequests', json.dumps(data))
