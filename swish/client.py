@@ -28,8 +28,9 @@ class SwishClient(object):
         r = self.post('paymentrequests', payload)
         return r
 
-    def get_payment_request(payment_request_id):
-        print("Not implemented yet!")
+    def get_payment_request(self, payment_request_id):
+        r = self.get('paymentrequests', payment_request_id)
+        return r
 
     def refund(self, amount, currency, callback_url, original_payment_reference, payer_payment_reference=''):
         payload = {
@@ -40,5 +41,6 @@ class SwishClient(object):
         r = self.post('refunds', payload)
         return r
 
-    def get_refund(refund_id):
-        print("Not implemented yet!")
+    def get_refund(self, refund_id):
+        r = self.get('refunds', refund_id)
+        return r
