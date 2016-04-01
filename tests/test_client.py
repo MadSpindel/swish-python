@@ -10,7 +10,11 @@ class SwishClientTestCase(unittest.TestCase):
         cert_file_path = os.path.join(current_folder, "cert.pem")
         key_file_path = os.path.join(current_folder, "key.pem")
         cert = (cert_file_path, key_file_path)
-        self.client = swish.SwishClient(swish.Environment.Test, '1231181189', cert)
+        self.client = swish.SwishClient(
+            environment=swish.Environment.Test,
+            payee_alias='1231181189',
+            cert=cert,
+        )
 
     def test_client(self):
         self.assertEqual(self.client.environment.base_url, swish.Environment.Test.base_url)

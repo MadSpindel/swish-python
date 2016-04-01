@@ -10,9 +10,9 @@ Not available yet.
     import swish
 
     swish_client = swish.SwishClient(
-        swish.Environment.Production,
-        'YOUR_PAYEE_ALIAS',
-        '/path/to/cert.crt'
+        environment=swish.Environment.Test,
+        payee_alias='1231181189',
+        cert=('/path/to/cert.pem', '/path/to/key.pem')
     )
 
     swish_client.payment_request(
