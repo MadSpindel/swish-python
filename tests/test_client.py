@@ -1,60 +1,27 @@
-import json
-import responses
+import os
 import unittest
 
 import swish
 
-LOCATION = 'https://swicpc.bankgirot.se/swishcpcapi/api/v1/paymentrequests/AB23D7406ECE4542A80152D909EF9F6B'
-
 
 class SwishClientTestCase(unittest.TestCase):
     def setUp(self):
-        self.client = swish.SwishClient(swish.Environment.Test, 'fake-alias', 'fake-cert')
+        current_folder = os.path.dirname(os.path.abspath(__file__))
+        cert_file_path = os.path.join(current_folder, "cert.pem")
+        key_file_path = os.path.join(current_folder, "key.pem")
+        cert = (cert_file_path, key_file_path)
+        self.client = swish.SwishClient(swish.Environment.Test, '1231181189', cert)
 
     def test_client(self):
         self.assertEqual(self.client.environment.base_url, swish.Environment.Test.base_url)
-        self.assertEqual(self.client.payee_alias, 'fake-alias')
-        self.assertEqual(self.client.cert, 'fake-cert')
+        self.assertEqual(self.client.payee_alias, '1231181189')
 
-    @responses.activate
     def test_payment_request(self):
-        def request_callback(request):
-            headers = {
-                'Location': LOCATION
-            }
-            resp_body = {
-                "message": "Todo",
-            }
-            return (201, headers, json.dumps(resp_body))
-
-        responses.add_callback(
-            responses.POST,
-            self.client.environment.base_url + 'paymentrequests',
-            callback=request_callback,
-            content_type='application/json'
+        response = self.client.payment_request(
+            amount=1,
+            currency='SEK',
+            callback_url='https://fake-url.com/',
+            payee_payment_reference='fake',
+            message='fake'
         )
-
-        self.client.payment_request(
-            amount=1, currency='SEK', callback_url='https://fake-url.com/', payment_reference='fake', message='fake'
-        )
-        self.fail("Not implemented!")
-
-    @responses.activate
-    def test_refund(self):
-        def request_callback(request):
-            headers = {
-                'Location': LOCATION
-            }
-            resp_body = {
-                "message": "Todo",
-            }
-            return (201, headers, json.dumps(resp_body))
-
-        responses.add_callback(
-            responses.POST,
-            self.client.environment.base_url + 'refunds',
-            callback=request_callback,
-            content_type='application/json'
-        )
-
-        self.fail("Not implemented!")
+        print(response)

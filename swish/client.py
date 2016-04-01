@@ -11,7 +11,8 @@ class SwishClient(object):
 
     def post(self, endpoint, payload):
         url = self.environment.base_url + endpoint
-        return requests.post(url=url, json=payload, headers={'Content-Type': 'application/json'}, cert=self.cert)
+        return requests.post(url=url, json=payload, headers={'Content-Type': 'application/json'}, cert=self.cert,
+                             verify=False)
 
     def get(self, url):
         return requests.get(url, cert=self.cert)
@@ -25,12 +26,12 @@ class SwishClient(object):
             'payeePaymentReference': payee_payment_reference,
             'message': message
         }
-        r = self.post('paymentrequests', payload)
-        return r
+        response = self.post('paymentrequests', payload)
+        return response
 
     def get_payment_request(self, payment_request_id):
-        r = self.get('paymentrequests/' + payment_request_id)
-        return r
+        response = self.get('paymentrequests/' + payment_request_id)
+        return response
 
     def refund(self, amount, currency, callback_url, original_payment_reference, payer_payment_reference=''):
         payload = {
@@ -38,9 +39,9 @@ class SwishClient(object):
             'currency': currency,
             'callback_url': callback_url
         }
-        r = self.post('refunds', payload)
-        return r
+        response = self.post('refunds', payload)
+        return response
 
     def get_refund(self, refund_id):
-        r = self.get('refunds/' + refund_id)
-        return r
+        response = self.get('refunds/' + refund_id)
+        return response
