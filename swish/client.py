@@ -2,6 +2,12 @@ import requests
 
 from .environment import Environment
 
+try:
+    from requests.packages.urllib3.contrib import pyopenssl
+    pyopenssl.extract_from_urllib3()
+except ImportError:
+    pass
+
 
 class SwishClient(object):
     def __init__(self, environment, payee_alias, cert):
