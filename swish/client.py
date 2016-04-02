@@ -10,7 +10,7 @@ except ImportError:
 
 
 class SwishClient(object):
-    def __init__(self, environment, payee_alias, cert):
+    def __init__(self, environment, payee_alias, cert, verify=False):
         self.environment = Environment.parse_environment(environment)
         self.payee_alias = payee_alias
         self.cert = cert
