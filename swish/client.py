@@ -14,11 +14,12 @@ class SwishClient(object):
         self.environment = Environment.parse_environment(environment)
         self.payee_alias = payee_alias
         self.cert = cert
+        self.verify = verify
 
     def post(self, endpoint, payload):
         url = self.environment.base_url + endpoint
         return requests.post(url=url, json=payload, headers={'Content-Type': 'application/json'}, cert=self.cert,
-                             verify=False)
+                             verify=self.verify)
 
     def get(self, url):
         return requests.get(url, cert=self.cert)
