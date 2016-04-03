@@ -5,4 +5,4 @@ source = swish
 [report]
 omit =
     swish/*__init__.py
-    swish/tests/*
+    tests/*
