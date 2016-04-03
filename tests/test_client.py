@@ -30,4 +30,4 @@ class SwishClientTestCase(unittest.TestCase):
             payee_payment_reference='fake',
             message='fake'
         )
-        print(response)
+        self.fail("Not implemented!")
