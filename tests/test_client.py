@@ -22,12 +22,34 @@ class SwishClientTestCase(unittest.TestCase):
         self.assertEqual(self.client.environment.base_url, swish.Environment.Test.base_url)
         self.assertEqual(self.client.payee_alias, '1231181189')
 
-    def test_payment_request(self):
-        response = self.client.payment_request(
-            amount=1,
+    def test_payment_request_ecommerce(self):
+        r = self.client.payment_request(
+            payee_payment_reference='0123456789',
+            callback_url='https://example.com/api/swishcb/paymentrequests',
+            payer_alias='4671234768',
+            amount=100,
             currency='SEK',
-            callback_url='https://fake-url.com/',
-            payee_payment_reference='fake',
-            message='fake'
+            message='Kingston USB Flash Drive 8 GB'
         )
-        self.fail("Not implemented!")
+        self.assertEqual(r.status_code, 201)
+
+    def test_payment_request_mcommerce(self):
+        r = self.client.payment_request(
+            payee_payment_reference='0123456789',
+            callback_url='https://example.com/api/swishcb/paymentrequests',
+            amount=100,
+            currency='SEK',
+            message='Kingston USB Flash Drive 8 GB'
+        )
+        self.assertEqual(r.status_code, 201)
+        self.assertIsNotNone(r.headers['PaymentRequestToken'])
+
+    def test_payment_request_error(self):
+        with self.assertRaises(swish.SwishError):
+            self.client.payment_request(
+                payee_payment_reference='0123456789',
+                callback_url='https://example.com/api/swishcb/paymentrequests',
+                amount=100,
+                currency='SEK',
+                message='BE18'
+            )

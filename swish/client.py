@@ -1,6 +1,7 @@
 import requests
 
 from .environment import Environment
+from .error import SwishError
 
 try:
     from requests.packages.urllib3.contrib import pyopenssl
@@ -24,21 +25,27 @@ class SwishClient(object):
     def get(self, url):
         return requests.get(url, cert=self.cert)
 
-    def payment_request(self, amount, currency, callback_url, payee_payment_reference='', message=''):
+    def payment_request(self, amount, currency, callback_url, payee_payment_reference='', message='', payer_alias=''):
         payload = {
             'payeeAlias': self.payee_alias,
             'amount': amount,
             'currency': currency,
             'callbackUrl': callback_url,
             'payeePaymentReference': payee_payment_reference,
-            'message': message
+            'message': message,
         }
+        if payer_alias:
+            payload.update({'payer_alias': payer_alias})
+
         response = self.post('paymentrequests', payload)
+        try:
+            response.raise_for_status()
+        except requests.exceptions.HTTPError:
+            raise SwishError(response.json())
         return response
 
     def get_payment_request(self, payment_request_id):
-        response = self.get('paymentrequests/' + payment_request_id)
-        return response
+        return self.get('paymentrequests/' + payment_request_id)
 
     def refund(self, amount, currency, callback_url, original_payment_reference, payer_payment_reference=''):
         payload = {
@@ -46,9 +53,7 @@ class SwishClient(object):
             'currency': currency,
             'callback_url': callback_url
         }
-        response = self.post('refunds', payload)
-        return response
+        return self.post('refunds', payload)
 
     def get_refund(self, refund_id):
-        response = self.get('refunds/' + refund_id)
-        return response
+        return self.get('refunds/' + refund_id)
