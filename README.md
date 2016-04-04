@@ -18,10 +18,12 @@ Not available yet.
         cert=('/path/to/cert.pem', '/path/to/key.pem')
     )
 
-    swish_client.payment_request(
+    payment = swish_client.payment_request(
         amount=123,
         currency='SEK',
         callback_url='https://your-callback.url/here/',
         payment_reference='Optional custom reference',
         message='Quick Start Example'
     )
+
+    # YOUR CODE: Save the payment ID and other info in a database for later!
