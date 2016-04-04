@@ -23,7 +23,7 @@ class SwishClientTestCase(unittest.TestCase):
         self.assertEqual(self.client.payee_alias, '1231181189')
 
     def test_payment_request_ecommerce(self):
-        r = self.client.payment_request(
+        payment = self.client.payment_request(
             payee_payment_reference='0123456789',
             callback_url='https://example.com/api/swishcb/paymentrequests',
             payer_alias='4671234768',
@@ -31,18 +31,18 @@ class SwishClientTestCase(unittest.TestCase):
             currency='SEK',
             message='Kingston USB Flash Drive 8 GB'
         )
-        self.assertEqual(r.status_code, 201)
+        self.assertIsNotNone(payment.id)
 
     def test_payment_request_mcommerce(self):
-        r = self.client.payment_request(
+        payment = self.client.payment_request(
             payee_payment_reference='0123456789',
             callback_url='https://example.com/api/swishcb/paymentrequests',
             amount=100,
             currency='SEK',
             message='Kingston USB Flash Drive 8 GB'
         )
-        self.assertEqual(r.status_code, 201)
-        self.assertIsNotNone(r.headers['PaymentRequestToken'])
+        self.assertIsNotNone(payment.id)
+        self.assertIsNotNone(payment.request_token)
 
     def test_payment_request_error(self):
         with self.assertRaises(swish.SwishError):
