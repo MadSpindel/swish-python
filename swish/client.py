@@ -38,10 +38,9 @@ class SwishClient(object):
             payload.update({'payer_alias': payer_alias})
 
         response = self.post('paymentrequests', payload)
-        try:
-            response.raise_for_status()
-        except requests.exceptions.HTTPError:
+        if response.status_code == 422:
             raise SwishError(response.json())
+        response.raise_for_status()
         return response
 
     def get_payment_request(self, payment_request_id):
