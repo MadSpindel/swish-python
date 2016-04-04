@@ -26,4 +26,4 @@ Not available yet.
         message='Quick Start Example'
     )
 
-    # YOUR CODE: Save the payment ID and other info in a database for later!
+    # YOUR CODE: Save payment.id and other info in your database for later!
