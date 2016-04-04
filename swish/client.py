@@ -42,7 +42,7 @@ class SwishClient(object):
         if response.status_code == 422:
             raise SwishError(response.json())
         response.raise_for_status()
-        return Payment(id=response.headers.get('Location'), request_token=response.headers.get('PaymentRequestToken'))
+        return Payment(location=response.headers.get('Location'), request_token=response.headers.get('PaymentRequestToken'))
 
     def get_payment_request(self, payment_request_id):
         return self.get('paymentrequests/' + payment_request_id)
