@@ -1,5 +1,6 @@
 import os
 import unittest
+from random import randint
 
 import swish
 
@@ -23,10 +24,11 @@ class SwishClientTestCase(unittest.TestCase):
         self.assertEqual(self.client.payee_alias, '1231181189')
 
     def test_payment_request_ecommerce(self):
+        payer_alias = '467%i' % randint(1000000, 9999999)
         payment = self.client.payment_request(
             payee_payment_reference='0123456789',
             callback_url='https://example.com/api/swishcb/paymentrequests',
-            payer_alias='4671234768',
+            payer_alias=payer_alias,
             amount=100,
             currency='SEK',
             message='Kingston USB Flash Drive 8 GB'
