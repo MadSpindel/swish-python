@@ -1,4 +1,4 @@
 # flake8: noqa
 from .client import SwishClient
 from .environment import Environment
-from .error import SwishError
+from .exceptions import SwishError

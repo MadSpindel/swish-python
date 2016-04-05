@@ -1,7 +1,7 @@
 import requests
 
 from .environment import Environment
-from .error import SwishError
+from .exceptions import SwishError
 from .payment import Payment
 
 try:
