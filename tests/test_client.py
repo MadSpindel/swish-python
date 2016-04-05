@@ -53,3 +53,18 @@ class SwishClientTestCase(unittest.TestCase):
                 currency='SEK',
                 message='BE18'
             )
+
+    def test_get_payment(self):
+        payment_request = self.client.payment_request(
+            payee_payment_reference='0123456789',
+            callback_url='https://example.com/api/swishcb/paymentrequests',
+            amount=100,
+            currency='SEK',
+            message='Kingston USB Flash Drive 8 GB'
+        )
+        payment = self.client.get_payment_request(payment_request.id)
+        self.assertEqual(payment.payee_payment_reference, '0123456789')
+        self.assertEqual(payment.callback_url, 'https://example.com/api/swishcb/paymentrequests')
+        self.assertEqual(payment.amount, 100)
+        self.assertEqual(payment.currency, 'SEK')
+        self.assertEqual(payment.message, 'Kingston USB Flash Drive 8 GB')

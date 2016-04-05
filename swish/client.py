@@ -23,32 +23,35 @@ class SwishClient(object):
         return requests.post(url=url, json=payload, headers={'Content-Type': 'application/json'}, cert=self.cert,
                              verify=self.verify)
 
-    def get(self, url):
-        return requests.get(url, cert=self.cert)
+    def get(self, endpoint):
+        url = self.environment.base_url + endpoint
+        return requests.get(url, cert=self.cert, verify=self.verify)
 
-    def payment_request(self, amount, currency, callback_url, payee_payment_reference='', message='', payer_alias=''):
-        payload = {
-            'payeeAlias': self.payee_alias,
+    def payment_request(self, amount, currency, callback_url, payee_payment_reference=None, message=None,
+                        payer_alias=None):
+        payment_request = Payment({
+            'payee_alias': self.payee_alias,
             'amount': amount,
             'currency': currency,
-            'callbackUrl': callback_url,
-            'payeePaymentReference': payee_payment_reference,
+            'callback_url': callback_url,
+            'payee_payment_reference': payee_payment_reference,
             'message': message,
-        }
-        if payer_alias:
-            payload.update({'payer_alias': payer_alias})
+            'payer_alias': payer_alias
+        })
 
-        response = self.post('paymentrequests', payload)
+        response = self.post('paymentrequests', payment_request.to_primitive())
         if response.status_code == 422:
             raise SwishError(response.json())
         response.raise_for_status()
-        return Payment(
-            location=response.headers.get('Location'),
-            request_token=response.headers.get('PaymentRequestToken')
-        )
+
+        return Payment({'id': response.headers.get('Location').split('/')[-1],
+                        'location': response.headers.get('Location'),
+                        'request_token': response.headers.get('PaymentRequestToken')})
 
     def get_payment_request(self, payment_request_id):
-        return self.get('paymentrequests/' + payment_request_id)
+        response = self.get('paymentrequests/' + payment_request_id)
+        response.raise_for_status()
+        return Payment(response.json())
 
     def refund(self, amount, currency, callback_url, original_payment_reference, payer_payment_reference=''):
         payload = {
@@ -56,7 +59,11 @@ class SwishClient(object):
             'currency': currency,
             'callback_url': callback_url
         }
-        return self.post('refunds', payload)
+        response = self.post('refunds', payload)
+        response.raise_for_status()
+        return response
 
     def get_refund(self, refund_id):
-        return self.get('refunds/' + refund_id)
+        response = self.get('refunds/' + refund_id)
+        response.raise_for_status()
+        return response
