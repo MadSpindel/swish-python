@@ -54,12 +54,12 @@ class SwishClient(object):
         return Payment(response.json())
 
     def refund(self, amount, currency, callback_url, original_payment_reference, payer_payment_reference=''):
-        payload = {
+        refund_request = Payment({
             'amount': amount,
             'currency': currency,
             'callback_url': callback_url
-        }
-        response = self.post('refunds', payload)
+        })
+        response = self.post('refunds', refund_request.to_primitive())
         response.raise_for_status()
         return response
 
