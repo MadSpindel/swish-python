@@ -70,24 +70,3 @@ class SwishClientTestCase(unittest.TestCase):
         self.assertEqual(payment.amount, 100)
         self.assertEqual(payment.currency, 'SEK')
         self.assertEqual(payment.message, 'Kingston USB Flash Drive 8 GB')
-
-    def test_get_payment_error(self):
-        payer_alias = '467%i' % randint(1000000, 9999999)
-        try:
-            payment_request = self.client.payment_request(
-                payee_payment_reference='0123456789',
-                callback_url='https://example.com/api/swishcb/paymentrequests',
-                payer_alias=payer_alias,
-                amount=100,
-                currency='SEK',
-                message='AC05'
-            )
-        except swish.SwishError:
-            pass
-        payment = self.client.get_payment_request(payment_request.id)
-        self.assertEqual(payment.payee_payment_reference, '0123456789')
-        self.assertEqual(payment.callback_url, 'https://example.com/api/swishcb/paymentrequests')
-        self.assertEqual(payment.amount, 100)
-        self.assertEqual(payment.currency, 'SEK')
-        self.assertEqual(payment.message, 'AC05')
-        self.assertEqual(payment.status_code, 'ERROR')
