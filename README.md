@@ -18,12 +18,13 @@ Not available yet.
         cert=('/path/to/cert.pem', '/path/to/key.pem')
     )
 
-    payment = swish_client.payment_request(
-        amount=123,
+    payment = swish_client.create_payment(
+        payee_payment_reference='0123456789',
+        callback_url='https://example.com/api/swishcb/paymentrequests',
+        payer_alias='46712345678',
+        amount=100,
         currency='SEK',
-        callback_url='https://your-callback.url/here/',
-        payment_reference='Optional custom reference',
-        message='Quick Start Example'
+        message='Kingston USB Flash Drive 8 GB'
     )
 
     # YOUR CODE: Save payment.id and other info in your database for later!
