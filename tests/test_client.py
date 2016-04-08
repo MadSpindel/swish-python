@@ -23,7 +23,7 @@ class SwishClientTestCase(unittest.TestCase):
         self.assertEqual(self.client.environment.base_url, swish.Environment.Test.base_url)
         self.assertEqual(self.client.payee_alias, '1231181189')
 
-    def test_payment_request_ecommerce(self):
+    def test_create_payment_ecommerce(self):
         payer_alias = '467%i' % randint(1000000, 9999999)
         payment = self.client.create_payment(
             payee_payment_reference='0123456789',
@@ -35,7 +35,7 @@ class SwishClientTestCase(unittest.TestCase):
         )
         self.assertIsNotNone(payment.id)
 
-    def test_payment_request_mcommerce(self):
+    def test_create_payment_mcommerce(self):
         payment = self.client.create_payment(
             payee_payment_reference='0123456789',
             callback_url='https://example.com/api/swishcb/paymentrequests',
@@ -46,7 +46,7 @@ class SwishClientTestCase(unittest.TestCase):
         self.assertIsNotNone(payment.id)
         self.assertIsNotNone(payment.request_token)
 
-    def test_payment_request_error(self):
+    def test_create_payment_error(self):
         with self.assertRaises(swish.SwishError):
             self.client.create_payment(
                 payee_payment_reference='0123456789',
