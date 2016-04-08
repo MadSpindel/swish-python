@@ -70,3 +70,9 @@ class SwishClientTestCase(unittest.TestCase):
         self.assertEqual(payment.amount, 100)
         self.assertEqual(payment.currency, 'SEK')
         self.assertEqual(payment.message, 'Kingston USB Flash Drive 8 GB')
+
+    def test_create_refund(self):
+        self.fail("Not implemented")
+
+    def test_get_refund(self):
+        self.fail("Not implemented")
