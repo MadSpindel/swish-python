@@ -2,7 +2,7 @@ import requests
 
 from .environment import Environment
 from .exceptions import SwishError
-from .payment import Payment
+from .models import Payment, Refund
 
 try:
     from requests.packages.urllib3.contrib import pyopenssl
@@ -12,9 +12,9 @@ except ImportError:
 
 
 class SwishClient(object):
-    def __init__(self, environment, payee_alias, cert, verify=False):
+    def __init__(self, environment, merchant_swish_number, cert, verify=False):
         self.environment = Environment.parse_environment(environment)
-        self.payee_alias = payee_alias
+        self.merchant_swish_number = merchant_swish_number
         self.cert = cert
         self.verify = verify
 
@@ -30,7 +30,7 @@ class SwishClient(object):
     def create_payment(self, amount, currency, callback_url, payee_payment_reference=None, message=None,
                        payer_alias=None):
         payment_request = Payment({
-            'payee_alias': self.payee_alias,
+            'payee_alias': self.merchant_swish_number,
             'amount': amount,
             'currency': currency,
             'callback_url': callback_url,
@@ -53,11 +53,18 @@ class SwishClient(object):
         response.raise_for_status()
         return Payment(response.json())
 
-    def create_refund(self, amount, currency, callback_url, original_payment_reference, payer_payment_reference=''):
-        refund_request = Payment({
+    def create_refund(self, original_payment_reference, amount, currency, callback_url, payer_payment_reference=None,
+                      payment_reference=None, payee_alias=None, message=None):
+        refund_request = Refund({
+            'payer_alias': self.merchant_swish_number,
+            'payee_alias': payee_alias,
+            'original_payment_reference': original_payment_reference,
             'amount': amount,
             'currency': currency,
-            'callback_url': callback_url
+            'callback_url': callback_url,
+            'payer_payment_reference': payer_payment_reference,
+            'payment_reference': payment_reference,
+            'message': message
         })
         response = self.post('refunds', refund_request.to_primitive())
         response.raise_for_status()

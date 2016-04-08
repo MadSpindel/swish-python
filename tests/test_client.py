@@ -14,14 +14,14 @@ class SwishClientTestCase(unittest.TestCase):
         verify = os.path.join(current_folder, "swish.pem")
         self.client = swish.SwishClient(
             environment=swish.Environment.Test,
-            payee_alias='1231181189',
+            merchant_swish_number='1231181189',
             cert=cert,
             verify=verify
         )
 
     def test_client(self):
         self.assertEqual(self.client.environment.base_url, swish.Environment.Test.base_url)
-        self.assertEqual(self.client.payee_alias, '1231181189')
+        self.assertEqual(self.client.merchant_swish_number, '1231181189')
 
     def test_create_payment_ecommerce(self):
         payer_alias = '467%i' % randint(1000000, 9999999)
