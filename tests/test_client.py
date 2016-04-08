@@ -25,7 +25,7 @@ class SwishClientTestCase(unittest.TestCase):
 
     def test_payment_request_ecommerce(self):
         payer_alias = '467%i' % randint(1000000, 9999999)
-        payment = self.client.payment_request(
+        payment = self.client.create_payment(
             payee_payment_reference='0123456789',
             callback_url='https://example.com/api/swishcb/paymentrequests',
             payer_alias=payer_alias,
@@ -36,7 +36,7 @@ class SwishClientTestCase(unittest.TestCase):
         self.assertIsNotNone(payment.id)
 
     def test_payment_request_mcommerce(self):
-        payment = self.client.payment_request(
+        payment = self.client.create_payment(
             payee_payment_reference='0123456789',
             callback_url='https://example.com/api/swishcb/paymentrequests',
             amount=100,
@@ -48,7 +48,7 @@ class SwishClientTestCase(unittest.TestCase):
 
     def test_payment_request_error(self):
         with self.assertRaises(swish.SwishError):
-            self.client.payment_request(
+            self.client.create_payment(
                 payee_payment_reference='0123456789',
                 callback_url='https://example.com/api/swishcb/paymentrequests',
                 amount=100,
@@ -57,14 +57,14 @@ class SwishClientTestCase(unittest.TestCase):
             )
 
     def test_get_payment(self):
-        payment_request = self.client.payment_request(
+        payment_request = self.client.create_payment(
             payee_payment_reference='0123456789',
             callback_url='https://example.com/api/swishcb/paymentrequests',
             amount=100,
             currency='SEK',
             message='Kingston USB Flash Drive 8 GB'
         )
-        payment = self.client.get_payment_request(payment_request.id)
+        payment = self.client.get_payment(payment_request.id)
         self.assertEqual(payment.payee_payment_reference, '0123456789')
         self.assertEqual(payment.callback_url, 'https://example.com/api/swishcb/paymentrequests')
         self.assertEqual(payment.amount, 100)
