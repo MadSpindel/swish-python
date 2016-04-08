@@ -14,7 +14,7 @@ Not available yet.
 
     swish_client = swish.SwishClient(
         environment=swish.Environment.Test,
-        payee_alias='1231181189',
+        merchant_swish_number='1231181189',
         cert=('/path/to/cert.pem', '/path/to/key.pem')
     )
 
