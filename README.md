@@ -15,7 +15,8 @@ Not available yet.
     swish_client = swish.SwishClient(
         environment=swish.Environment.Test,
         merchant_swish_number='1231181189',
-        cert=('/path/to/cert.pem', '/path/to/key.pem')
+        cert=('/path/to/cert.pem', '/path/to/key.pem'),
+        verify='/path/to/swish.pem'
     )
 
     payment = swish_client.create_payment(
