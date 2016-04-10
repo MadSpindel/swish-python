@@ -68,9 +68,11 @@ class SwishClient(object):
         })
         response = self.post('refunds', refund_request.to_primitive())
         response.raise_for_status()
-        return response
+
+        return Refund({'id': response.headers.get('Location').split('/')[-1],
+                       'location': response.headers.get('Location')})
 
     def get_refund(self, refund_id):
         response = self.get('refunds/' + refund_id)
         response.raise_for_status()
-        return response
+        return Refund(response.json())

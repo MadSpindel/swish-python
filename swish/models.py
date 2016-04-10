@@ -24,6 +24,7 @@ class Payment(models.Model):
 
 
 class Refund(models.Model):
+    id = types.StringType()
     original_payment_reference = types.StringType(serialized_name='originalPaymentReference')
     amount = types.FloatType()
     currency = types.StringType()
@@ -33,6 +34,10 @@ class Refund(models.Model):
     callback_url = types.URLType(serialized_name='callbackUrl')
     payer_payment_reference = types.StringType(serialized_name='payerPaymentReference')
     payment_reference = types.StringType(serialized_name='paymentReference')
+    status = types.StringType()
+    date_created = types.DateTimeType(serialized_name='dateCreated')
+    date_paid = types.DateTimeType(serialized_name='datePaid')
+    location = types.URLType()
 
     class Options:
         serialize_when_none = False
