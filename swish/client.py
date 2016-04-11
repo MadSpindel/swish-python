@@ -66,7 +66,10 @@ class SwishClient(object):
             'payment_reference': payment_reference,
             'message': message
         })
+
         response = self.post('refunds', refund_request.to_primitive())
+        if response.status_code == 422:
+            raise SwishError(response.json())
         response.raise_for_status()
 
         return Refund({'id': response.headers.get('Location').split('/')[-1],
