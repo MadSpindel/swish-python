@@ -1,6 +1,7 @@
 import os
 import unittest
 from random import randint
+import time
 
 import swish
 
@@ -34,6 +35,7 @@ class SwishClientTestCase(unittest.TestCase):
             message='Kingston USB Flash Drive 8 GB'
         )
         self.assertIsNotNone(payment.id)
+        self.assertIsNotNone(payment.location)
 
     def test_create_payment_mcommerce(self):
         payment = self.client.create_payment(
@@ -44,6 +46,7 @@ class SwishClientTestCase(unittest.TestCase):
             message='Kingston USB Flash Drive 8 GB'
         )
         self.assertIsNotNone(payment.id)
+        self.assertIsNotNone(payment.location)
         self.assertIsNotNone(payment.request_token)
 
     def test_create_payment_error(self):
@@ -72,7 +75,45 @@ class SwishClientTestCase(unittest.TestCase):
         self.assertEqual(payment.message, 'Kingston USB Flash Drive 8 GB')
 
     def test_create_refund(self):
-        self.fail("Not implemented")
+        payment = self.client.create_payment(
+            payee_payment_reference='0123456789',
+            callback_url='https://example.com/api/swishcb/paymentrequests',
+            amount=100,
+            currency='SEK',
+            message='Kingston USB Flash Drive 8 GB'
+        )
+        time.sleep(5)
+        refund = self.client.create_refund(
+            original_payment_reference=payment.id,
+            amount=100,
+            currency='SEK',
+            callback_url='https://example.com/api/swishcb/refunds',
+            payer_payment_reference='0123456789',
+            message='Refund for Kingston USB Flash Drive 8 GB'
+        )
+        self.assertIsNotNone(refund.id)
+        self.assertIsNotNone(refund.location)
 
     def test_get_refund(self):
-        self.fail("Not implemented")
+        payment = self.client.create_payment(
+            payee_payment_reference='0123456789',
+            callback_url='https://example.com/api/swishcb/paymentrequests',
+            amount=100,
+            currency='SEK',
+            message='Kingston USB Flash Drive 8 GB'
+        )
+        time.sleep(5)
+        refund_request = self.client.create_refund(
+            original_payment_reference=payment.id,
+            amount=100,
+            currency='SEK',
+            callback_url='https://example.com/api/swishcb/refunds',
+            payer_payment_reference='0123456789',
+            message='Refund for Kingston USB Flash Drive 8 GB'
+        )
+        refund = self.client.get_refund(refund_request.id)
+        self.assertEqual(refund.original_payment_reference, payment.id)
+        self.assertEqual(refund.callback_url, 'https://example.com/api/swishcb/refunds')
+        self.assertEqual(refund.amount, 100)
+        self.assertEqual(refund.currency, 'SEK')
+        self.assertEqual(refund.message, 'Refund for Kingston USB Flash Drive 8 GB')
