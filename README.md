@@ -6,7 +6,9 @@
 This client library is designed to support the [Swish API](https://www.getswish.se/content/uploads/2015/06/Guide-Swish-API_160329.pdf). It was originally developed at [Playing](https://playing.se/).
 
 ## Installation
-Not available yet.
+It's easy! Just install it with pip:
+
+    pip install swish
 
 ## Quick Start Example
 
