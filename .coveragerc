@@ -6,3 +6,4 @@ source = swish
 omit =
     swish/*__init__.py
     tests/*
+    setup.py
