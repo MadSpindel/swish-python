@@ -75,7 +75,7 @@ class SwishClientTestCase(unittest.TestCase):
         self.assertEqual(payment.message, 'Kingston USB Flash Drive 8 GB')
 
     def test_create_refund(self):
-        payment = self.client.create_payment(
+        payment_request = self.client.create_payment(
             payee_payment_reference='0123456789',
             callback_url='https://example.com/api/swishcb/paymentrequests',
             amount=100,
@@ -83,8 +83,9 @@ class SwishClientTestCase(unittest.TestCase):
             message='Kingston USB Flash Drive 8 GB'
         )
         time.sleep(5)
+        payment = self.client.get_payment(payment_request.id)
         refund = self.client.create_refund(
-            original_payment_reference=payment.id,
+            original_payment_reference=payment.payment_reference,
             amount=100,
             currency='SEK',
             callback_url='https://example.com/api/swishcb/refunds',
@@ -95,7 +96,7 @@ class SwishClientTestCase(unittest.TestCase):
         self.assertIsNotNone(refund.location)
 
     def test_get_refund(self):
-        payment = self.client.create_payment(
+        payment_request = self.client.create_payment(
             payee_payment_reference='0123456789',
             callback_url='https://example.com/api/swishcb/paymentrequests',
             amount=100,
@@ -103,8 +104,9 @@ class SwishClientTestCase(unittest.TestCase):
             message='Kingston USB Flash Drive 8 GB'
         )
         time.sleep(5)
+        payment = self.client.get_payment(payment_request.id)
         refund_request = self.client.create_refund(
-            original_payment_reference=payment.id,
+            original_payment_reference=payment.payment_reference,
             amount=100,
             currency='SEK',
             callback_url='https://example.com/api/swishcb/refunds',
@@ -112,7 +114,7 @@ class SwishClientTestCase(unittest.TestCase):
             message='Refund for Kingston USB Flash Drive 8 GB'
         )
         refund = self.client.get_refund(refund_request.id)
-        self.assertEqual(refund.original_payment_reference, payment.id)
+        self.assertEqual(refund.original_payment_reference, payment.payment_reference)
         self.assertEqual(refund.callback_url, 'https://example.com/api/swishcb/refunds')
         self.assertEqual(refund.amount, 100)
         self.assertEqual(refund.currency, 'SEK')

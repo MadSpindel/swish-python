@@ -38,6 +38,9 @@ class Refund(models.Model):
     date_created = types.DateTimeType(serialized_name='dateCreated')
     date_paid = types.DateTimeType(serialized_name='datePaid')
     location = types.URLType()
+    error_code = types.StringType(serialized_name='errorCode')
+    error_message = types.StringType(serialized_name='errorMessage')
+    additional_information = types.StringType(serialized_name='additionalInformation')
 
     class Options:
         serialize_when_none = False
