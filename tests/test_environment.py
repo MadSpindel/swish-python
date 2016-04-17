@@ -17,3 +17,7 @@ class EnvironmentTestCase(unittest.TestCase):
     def test_parse_environment_object(self):
         environment = Environment.parse_environment(Environment.Test)
         self.assertEqual(environment, Environment.Test)
+
+    def test_environment_str(self):
+        environment = Environment.Test
+        self.assertEqual(str(environment), environment.name)
