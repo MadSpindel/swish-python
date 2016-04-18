@@ -9,7 +9,7 @@ with open(path.join(here, 'LONG_DESCRIPTION.rst'), encoding='utf-8') as f:
 
 setup(
     name='swish',
-    version='1.0a1',
+    version='1.0b1',
     packages=find_packages(),
     include_package_data=True,
     license='MIT',
@@ -23,7 +23,7 @@ setup(
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         "Topic :: Software Development :: Libraries :: Python Modules",
         'License :: OSI Approved :: MIT License',
