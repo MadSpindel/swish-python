@@ -2,15 +2,15 @@
 
 [![Build Status](https://travis-ci.org/playing-se/swish-python.svg?branch=master)](https://travis-ci.org/playing-se/swish-python)
 [![codecov.io](https://codecov.io/github/playing-se/swish-python/coverage.svg?branch=master)](https://codecov.io/github/playing-se/swish-python?branch=master)
-# Swish Python Client Library
+# 💸 Swish Python Client Library
 This client library is designed to support the [Swish API](https://www.getswish.se/content/uploads/2015/06/Guide-Swish-API_160329.pdf). It was originally developed at [Playing](https://playing.se/).
 
-## Installation
+## 🏗 Installation
 It's easy! Just install it with pip:
 ```
 pip install swish
 ```
-## Quick Start Example
+## 📋 Quick Start Example
 ```python
 import swish
 
