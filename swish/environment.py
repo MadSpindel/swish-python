@@ -18,6 +18,7 @@ class Environment(object):
         except KeyError:
             raise ConfigurationError("Provided environment name is invalid")
 
+
 Environment.Test = Environment(
     name="test",
     base_url="https://mss.swicpc.bankgirot.se/swish-cpcapi/api/v1/"
