@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/playingmedia/swish-python.svg?branch=master)](https://travis-ci.org/playingmedia/swish-python)
 [![codecov.io](https://codecov.io/github/playingmedia/swish-python/coverage.svg?branch=master)](https://codecov.io/github/playingmedia/swish-python?branch=master)
 # 💰 Swish Python Client Library
-This client library is designed to support the [Swish API](https://www.getswish.se/content/uploads/2015/06/Guide-Swish-API-1604221.pdf). It was originally developed at [Playing](https://playing.se/).
+This client library is designed to support the Swish handel API.
 
 ## 🏗 Installation
 It's easy! Just install it with pip:
