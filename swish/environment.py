@@ -21,11 +21,11 @@ class Environment(object):
 
 Environment.Test = Environment(
     name="test",
-    base_url="https://mss.swicpc.bankgirot.se/swish-cpcapi/api/v1/"
+    base_url="https://mss.cpc.getswish.net/swish-cpcapi/api/v1/"
 )
 Environment.Production = Environment(
     name="production",
-    base_url="https://swicpc.bankgirot.se/swish-cpcapi/api/v1/"
+    base_url="https://cpc.getswish.net/swish-cpcapi/api/v1/"
 )
 Environment.All = {
     "test": Environment.Test,
