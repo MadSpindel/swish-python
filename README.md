@@ -5,6 +5,8 @@
 # 💰 Swish Python Client Library
 This client library is designed to support the Swish handel API.
 
+[Offical Integration Guide](https://developer.getswish.se/content/uploads/2017/04/MerchantsAPI_Getswish_180517_v1.91.pdf)
+
 ## 🏗 Installation
 It's easy! Just install it with pip:
 ```
