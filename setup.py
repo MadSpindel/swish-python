@@ -9,21 +9,21 @@ with open(path.join(here, 'LONG_DESCRIPTION.rst'), encoding='utf-8') as f:
 
 setup(
     name='swish',
-    version='1.0b1',
+    version='1.1',
     packages=find_packages(),
     include_package_data=True,
     license='MIT',
     description='Swish Python Client Library',
     long_description=long_description,
-    url='https://github.com/playing-se/swish-python',
-    author='Playing Media Sverige AB',
-    author_email='kontakt@playing.se',
+    url='https://github.com/MadSpindel/swish-python',
+    author='Fredrik Sundqvist',
+    author_email='fsundqvist@gmail.com',
     classifiers=[
         # How mature is this project? Common values are
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         "Topic :: Software Development :: Libraries :: Python Modules",
         'License :: OSI Approved :: MIT License',
