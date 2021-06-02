@@ -31,6 +31,7 @@ class Refund(models.Model):
     message = types.StringType()
     payer_alias = types.StringType(serialized_name='payerAlias')
     payee_alias = types.StringType(serialized_name='payeeAlias')
+    callback_identifier = types.StringType(serialized_name='callbackIdentifier')
     callback_url = types.URLType(serialized_name='callbackUrl')
     payer_payment_reference = types.StringType(serialized_name='payerPaymentReference')
     payment_reference = types.StringType(serialized_name='paymentReference')
