@@ -14,14 +14,14 @@ class SwishClientTestCase(unittest.TestCase):
         cert = (cert_file_path, key_file_path)
         verify = os.path.join(current_folder, "swish.pem")
         self.client = swish.SwishClient(
-            environment=swish.Environment.Test,
+            environment=swish.Environment.MSS,
             merchant_swish_number='1231181189',
             cert=cert,
             verify=verify
         )
 
     def test_client(self):
-        self.assertEqual(self.client.environment.base_url, swish.Environment.Test.base_url)
+        self.assertEqual(self.client.environment.base_url, swish.Environment.MSS.base_url)
         self.assertEqual(self.client.merchant_swish_number, '1231181189')
 
     def test_create_payment_ecommerce(self):
