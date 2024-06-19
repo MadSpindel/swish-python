@@ -17,7 +17,7 @@ pip install swish
 import swish
 
 swish_client = swish.SwishClient(
-    environment=swish.Environment.Test,
+    environment=swish.Environment.MSS,
     merchant_swish_number='1231181189',
     cert=('/path/to/cert.pem', '/path/to/key.pem'),
     verify='/path/to/swish.pem'
