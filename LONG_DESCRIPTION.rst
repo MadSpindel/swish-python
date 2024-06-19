@@ -1,7 +1,7 @@
 Swish Python Client Library
 ===========================
 
-This client library is designed to support the Swish API. It was originally developed at `Playing <https://playing.se/>`_.
+This client library is designed to support the Swish API.
 
 Installation
 ------------
