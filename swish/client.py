@@ -20,8 +20,8 @@ class SwishClient(object):
 
     def post(self, endpoint, payload):
         url = self.environment.base_url + endpoint
-        return requests.post(url=url, json=payload, headers={'Content-Type': 'application/json'}, cert=self.cert,
-                             verify=self.verify)
+        return requests.post(url=url, json=payload.to_primitive(), headers={'Content-Type': 'application/json'},
+                             cert=self.cert, verify=self.verify)
 
     def get(self, endpoint):
         url = self.environment.base_url + endpoint
@@ -39,7 +39,7 @@ class SwishClient(object):
             'payer_alias': payer_alias
         })
 
-        response = self.post('paymentrequests', payment_request.to_primitive())
+        response = self.post('paymentrequests', payment_request)
         if response.status_code == 422:
             raise SwishError(response.json())
         response.raise_for_status()
@@ -67,7 +67,7 @@ class SwishClient(object):
             'message': message
         })
 
-        response = self.post('refunds', refund_request.to_primitive())
+        response = self.post('refunds', refund_request)
         if response.status_code == 422:
             raise SwishError(response.json())
         response.raise_for_status()
