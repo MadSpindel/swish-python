@@ -23,8 +23,8 @@ class SwishClient(object):
         return requests.post(url=url, json=payload.to_primitive(), headers={'Content-Type': 'application/json'},
                              cert=self.cert, verify=self.verify)
 
-    def get(self, endpoint):
-        url = self.environment.base_url + endpoint
+    def get(self, endpoint, parameter):
+        url = self.environment.base_url + endpoint + '/' + str(parameter)
         return requests.get(url, cert=self.cert, verify=self.verify)
 
     def create_payment(self, amount, currency, callback_url, payee_payment_reference=None, message=None,
@@ -49,7 +49,7 @@ class SwishClient(object):
                         'request_token': response.headers.get('PaymentRequestToken')})
 
     def get_payment(self, payment_request_id):
-        response = self.get('paymentrequests/' + payment_request_id)
+        response = self.get('paymentrequests', payment_request_id)
         response.raise_for_status()
         return Payment(response.json())
 
@@ -76,6 +76,6 @@ class SwishClient(object):
                        'location': response.headers.get('Location')})
 
     def get_refund(self, refund_id):
-        response = self.get('refunds/' + refund_id)
+        response = self.get('refunds', refund_id)
         response.raise_for_status()
         return Refund(response.json())
