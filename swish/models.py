@@ -46,3 +46,13 @@ class Refund(models.Model):
 
     class Options:
         serialize_when_none = False
+
+class CommerceQRCodeRequest(models.Model):
+    token = types.StringType(required=True)
+    format = types.StringType(required=True, choices=('jpg','png','svg'), default='svg')
+    size = types.IntType()
+    border = types.IntType()
+    transparent = types.BooleanType()
+
+    class Options:
+        serialize_when_none = False

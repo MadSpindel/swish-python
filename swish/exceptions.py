@@ -1,5 +1,3 @@
-
-
 class SwishError(Exception):
     def __init__(self, json):
         code = json[0].get('errorCode')

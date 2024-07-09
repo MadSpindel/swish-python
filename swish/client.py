@@ -4,7 +4,7 @@ import requests
 
 from .environment import Environment
 from .exceptions import SwishError
-from .models import Payment, Refund
+from .models import Payment, Refund, CommerceQRCodeRequest
 
 try:
     from requests.packages.urllib3.contrib import pyopenssl
@@ -21,7 +21,11 @@ class SwishClient(object):
         self.verify = verify
 
     def __post(self, endpoint, payload):
-        url = self.environment.base_url + endpoint
+        if endpoint == 'commerce':
+          base_url = self.environment.qr_url
+        else:
+          base_url = self.environment.base_url
+        url = base_url + endpoint
         return requests.post(url=url, json=payload.to_primitive(), headers={'Content-Type': 'application/json'},
                              cert=self.cert, verify=self.verify)
 
@@ -89,3 +93,17 @@ class SwishClient(object):
         response = self.__get('refunds', refund_id)
         response.raise_for_status()
         return Refund(response.json())
+
+
+    def commerce_qr_code(self, token, format, size=None, border=None, transparent=None):
+        commerce_qr_code_request = CommerceQRCodeRequest({
+            'token': token,
+            'format': format,
+            'size': size,
+            'border': border,
+            'transparent': transparent
+        })
+
+        response = self.__post('commerce', commerce_qr_code_request)
+        response.raise_for_status()
+        return response.content
