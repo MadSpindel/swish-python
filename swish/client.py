@@ -4,7 +4,7 @@ import requests
 
 from .environment import Environment
 from .exceptions import SwishError
-from .models import Payment, Refund, CommerceQRCodeRequest
+from .models import Payment, Refund, CommerceQRCodeRequest, Operation
 
 try:
     from requests.packages.urllib3.contrib import pyopenssl
@@ -26,20 +26,26 @@ class SwishClient(object):
         else:
           base_url = self.environment.base_url
         url = base_url + endpoint
-        return requests.post(url=url, json=payload.to_primitive(), headers={'Content-Type': 'application/json'},
+        return requests.post(url=url, json=payload, headers={'Content-Type': 'application/json'},
                              cert=self.cert, verify=self.verify)
 
     def post(self, endpoint, payload):
-        warnings.warn("You shouldn't be calling this method. It will be private in a future version.", DeprecationWarning);
+        warnings.warn("You shouldn't be calling this method. It will be private in a future version.", DeprecationWarning)
         self.__post(endpoint, payload)
 
     def __get(self, endpoint, parameter):
         url = self.environment.base_url + endpoint + '/' + str(parameter)
-        return requests.get(url, cert=self.cert, verify=self.verify)
+        return requests.get(url=url, cert=self.cert, verify=self.verify)
 
     def get(self, endpoint, parameter):
-        warnings.warn("You shouldn't be calling this method. It will be private in a future version.", DeprecationWarning);
+        warnings.warn("You shouldn't be calling this method. It will be private in a future version.", DeprecationWarning)
         self.__get(endpoint, parameter)
+
+    def __patch(self, endpoint, parameter, payload):
+        url = self.environment.base_url + endpoint + '/' + str(parameter)
+        return requests.patch(url=url, json=payload, headers={'Content-Type': 'application/json-patch+json'},
+                              cert=self.cert, verify=self.verify)
+
 
     def create_payment(self, amount, currency, callback_url, payee_payment_reference=None, message=None,
                        payer_alias=None):
@@ -53,7 +59,7 @@ class SwishClient(object):
             'payer_alias': payer_alias
         })
 
-        response = self.__post('paymentrequests', payment_request)
+        response = self.__post('paymentrequests', payment_request.to_primitive())
         if response.status_code == 422:
             raise SwishError(response.json())
         response.raise_for_status()
@@ -64,6 +70,12 @@ class SwishClient(object):
 
     def get_payment(self, payment_request_id):
         response = self.__get('paymentrequests', payment_request_id)
+        response.raise_for_status()
+        return Payment(response.json())
+
+    def cancel_payment(self, payment_request_id):
+        operation = Operation()
+        response = self.__patch('paymentrequests', payment_request_id, [operation.to_primitive()])
         response.raise_for_status()
         return Payment(response.json())
 
@@ -81,7 +93,7 @@ class SwishClient(object):
             'message': message
         })
 
-        response = self.__post('refunds', refund_request)
+        response = self.__post('refunds', refund_request.to_primitive())
         if response.status_code == 422:
             raise SwishError(response.json())
         response.raise_for_status()
@@ -104,6 +116,6 @@ class SwishClient(object):
             'transparent': transparent
         })
 
-        response = self.__post('commerce', commerce_qr_code_request)
+        response = self.__post('commerce', commerce_qr_code_request.to_primitive())
         response.raise_for_status()
         return response.content
