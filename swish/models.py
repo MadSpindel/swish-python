@@ -58,6 +58,6 @@ class CommerceQRCodeRequest(models.Model):
         serialize_when_none = False
 
 class Operation(models.Model):
-    op    = types.StringType(required=True, choices=('replace',), default='replace'),
-    path  = types.StringType(required=True, choices=('/status',), default='/status'),
+    op    = types.StringType(required=True, choices=('replace',), default='replace')
+    path  = types.StringType(required=True, choices=('/status',), default='/status')
     value = types.StringType(required=True, choices=('cancelled',), default='cancelled')
