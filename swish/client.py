@@ -20,12 +20,14 @@ class SwishClient(object):
         self.cert = cert
         self.verify = verify
 
+        self.session = requests.Session()
+
     def __get(self, endpoint, parameter):
         url = self.environment.base_url + endpoint + '/' + str(parameter)
-        return requests.get( url    = url
-                           , cert   = self.cert
-                           , verify = self.verify
-                           )
+        return self.session.get( url    = url
+                               , cert   = self.cert
+                               , verify = self.verify
+                               )
 
     def __post(self, endpoint, payload):
         if endpoint == 'commerce':
@@ -33,10 +35,10 @@ class SwishClient(object):
         else:
           base_url = self.environment.base_url
         url = base_url + endpoint
-        return requests.post( url    = url
-                            , json   = payload
-                            , cert   = self.cert
-                            , verify = self.verify)
+        return self.session.post( url    = url
+                                , json   = payload
+                                , cert   = self.cert
+                                , verify = self.verify)
 
     def __put(self, endpoint, payload):
         if endpoint == 'commerce':
@@ -44,19 +46,20 @@ class SwishClient(object):
         else:
           base_url = self.environment.base_url
         url = base_url + endpoint
-        return requests.put( url    = url
-                           , json   = payload
-                           , cert   = self.cert
-                           , verify = self.verify
-                           )
+        return self.session.put( url    = url
+                               , json   = payload
+                               , cert   = self.cert
+                               , verify = self.verify
+                               )
 
     def __patch(self, endpoint, parameter, payload):
         url = self.environment.base_url + endpoint + '/' + str(parameter)
-        return requests.patch( url    = url
-                             , json   = payload
-                             , cert   = self.cert
-                             , verify = self.verify
-                             )
+        return self.session.patch( url     = url
+                                 , json    = payload
+                                 , headers = {'Content-Type': 'application/json-patch+json'}
+                                 , cert    = self.cert
+                                 , verify  = self.verify
+                                 )
 
 
     def create_payment( self

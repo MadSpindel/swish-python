@@ -15,14 +15,14 @@ class SwishClientTestCase(unittest.TestCase):
         verify = os.path.join(current_folder, "swish.pem")
         self.client = swish.SwishClient(
             environment=swish.Environment.MSS,
-            merchant_swish_number='1231181189',
+            merchant_swish_number='1234679304',
             cert=cert,
             verify=verify
         )
 
     def test_client(self):
         self.assertEqual(self.client.environment.base_url, swish.Environment.MSS.base_url)
-        self.assertEqual(self.client.merchant_swish_number, '1231181189')
+        self.assertEqual(self.client.merchant_swish_number, '1234679304')
 
     def test_create_payment_ecommerce(self):
         payer_alias = '467%i' % randint(1000000, 9999999)
@@ -73,6 +73,22 @@ class SwishClientTestCase(unittest.TestCase):
         self.assertEqual(payment.amount, 100)
         self.assertEqual(payment.currency, 'SEK')
         self.assertEqual(payment.message, 'Kingston USB Flash Drive 8 GB')
+
+    def test_cancel_payment(self):
+        payment_request = self.client.create_payment(
+            payee_payment_reference='0123456789',
+            callback_url='https://example.com/api/swishcb/paymentrequests',
+            amount=100,
+            currency='SEK',
+            message='Kingston USB Flash Drive 8 GB'
+        )
+        payment = self.client.cancel_payment(payment_request.id)
+        self.assertEqual(payment.id, payment_request.id)
+        self.assertEqual(payment.status, 'CANCELLED')
+
+    def test_cancel_operation(self):
+        self.assertEqual(swish.models.Operation().to_primitive(),
+                         {'op': 'replace', 'path': '/status', 'value': 'cancelled'})
 
     def test_create_refund(self):
         payment_request = self.client.create_payment(
