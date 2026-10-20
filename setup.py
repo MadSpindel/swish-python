@@ -9,8 +9,8 @@ with open(path.join(here, 'LONG_DESCRIPTION.rst'), encoding='utf-8') as f:
 
 setup(
     name='swish',
-    version='1.6.1',
-    packages=find_packages(),
+    version='1.7.0',
+    packages=find_packages(exclude=['tests', 'tests.*']),
     include_package_data=True,
     license='MIT',
     description='Swish Python Client Library',
